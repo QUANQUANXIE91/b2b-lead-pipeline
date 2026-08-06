@@ -41,7 +41,7 @@ last_updated: "2026-08-05-v210"
 告诉 Agent 以下信息即可开始：
 
 ```
-产品: [你的产品，如 LED lighting / solar freezer / textile machine]
+产品: [你的产品，如 LED lighting / textile machine / textile machine]
 目标市场: [国家或地区，如 Southeast Asia / Middle East / Africa]
 排除市场: [可选，如 India / Pakistan]
 客户类型: [如 distributor / wholesaler / importer / contractor]
@@ -115,7 +115,7 @@ last_updated: "2026-08-05-v210"
 
 | 运算符 | 用途 | 示例 |
 |--------|------|------|
-| `"精确短语"` | 精确匹配 | `"solar freezer distributor"` |
+| `"精确短语"` | 精确匹配 | `"textile machine distributor"` |
 | `site:` | 限定站点 | `site:linkedin.com/in/ CEO refrigeration` |
 | `intitle:` | 标题包含 | `intitle:"importer" LED` |
 | `inurl:` | URL 包含 | `inurl:contact textile machine` |
@@ -130,7 +130,7 @@ last_updated: "2026-08-05-v210"
 
 | 维度 | 语法 | 示例 |
 |------|------|------|
-| 公司后缀 | `产品词 + 公司后缀 + 采购词` | `"solar freezer" GmbH importer` |
+| 公司后缀 | `产品词 + 公司后缀 + 采购词` | `"textile machine" GmbH importer` |
 | 公共邮箱 | `产品词 + 采购词 + @邮箱后缀` | `"refrigeration" distributor "@gmail.com"` |
 | LinkedIn 精确 | `site:linkedin.com/in/ "公司名" 职位` | `site:linkedin.com/in/ "Solar Cooling" CEO` |
 | 邮箱格式破解 | `"@公司域名" site:公司官网` | `"@example.com" site:example.com` |

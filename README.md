@@ -114,7 +114,7 @@ git clone https://github.com/QUANQUANXIE91/b2b-lead-pipeline.git
 
 # 完整指令
 执行 B2B 客户开发 Pipeline:
-产品: solar freezer
+产品: LED lighting
 目标市场: Nigeria, Kenya, Ghana, UAE
 数量: 30 家
 排除: India, Pakistan
@@ -163,7 +163,6 @@ git clone https://github.com/QUANQUANXIE91/b2b-lead-pipeline.git
 
 每条都是真金白银换来的教训：
 
-1. **中国企业 URL 伪装** — URL 含目标国名 ≠ 本地公司（`gsl-energy.com/ghana-solar` 实为深圳公司）
 2. **双签名 bug** — body 含签名 + 脚本追加签名 = 双签名（发生 4+ 次的经典坑）
 3. **邮箱 false positive** — 搜到的邮箱可能属于同名不同公司，必须验证域名匹配
 4. **CRM 字段索引漂移** — JSON 字段顺序不稳定，必须动态读取
