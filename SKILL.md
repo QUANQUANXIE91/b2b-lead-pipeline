@@ -463,6 +463,73 @@ score < 0.50 → Tier C（存培育池）
 
 ## Loop Engineering（核心范式）
 
+### 工具链详解
+
+#### Crawl4AI 深度爬取（开源免费，74k stars）
+
+LLM 友好网页爬虫，异步浏览器池 + 反检测，替代传统爬虫成为主力。
+
+```bash
+# 基础爬取（输出干净 Markdown）
+crwl https://company-website.com -o markdown
+
+# 深度爬取（BFS 策略，最多 10 页）
+crwl https://company-website.com --deep-crawl bfs --max-pages 10
+
+# LLM 提取（用 AI 提取结构化数据）
+crwl https://company-website.com/products -q "Extract all products with prices"
+
+# 反检测模式（Patchright 隐身）
+crwl https://linkedin.com/company/xxx --anti-detection
+
+# 批量爬取（读取 URL 列表）
+crwl --input-file urls.txt --output-dir ./results
+
+# 崩溃恢复（长时间爬取中断后继续）
+crwl --resume crawl_state.json
+```
+
+**为什么选 Crawl4AI**：
+- 输出专为 RAG/AI 设计（保留标题/表格/代码）
+- BFS 深度爬取 + 崩溃恢复
+- Patchright 反检测（模拟真实用户）
+- 零成本，无需 API Key
+
+#### LinkedIn + Agent Reach 工具链
+
+| 工具 | 用途 | 成本 |
+|------|------|------|
+| **Jina Reader** | LinkedIn 公开信息读取 | 免费 |
+| **Agent Reach** | YouTube/Bilibili/RSS/网页抓取 | 免费 |
+| **browser-act** | 反检测浏览器自动化 | 免费 |
+
+**LinkedIn 搜索工作流**：
+```
+Step 1: Google 搜索 → site:linkedin.com/in/ "产品词" "国家" "职位"
+Step 2: Jina Reader 读取 LinkedIn 公开资料
+Step 3: 提取公司名/联系人/职位 → 入库 CRM
+```
+
+#### Firecrawl CLI（免费额度）
+
+搜索 + 抓取 + 交互 + 站点地图，无 Key 按 IP 限速。
+
+```bash
+# 搜索客户
+firecrawl search "solar freezer Kenya" --limit 10
+
+# 抓取公司主页
+firecrawl scrape https://company-website.com --only-main-content
+
+# 批量抓取整个网站
+firecrawl crawl https://example.com --limit 50 -o results.json
+
+# 发现网站所有 URL
+firecrawl map https://example.com --search "blog"
+
+# AI Agent 模式（描述需求自动抓取）
+firecrawl agent "Find top 5 distributors in Africa" --wait
+
 ### Loop 模板结构（每个 Loop 都必须有）
 
 - **Goal**: 目标是什么
@@ -543,7 +610,31 @@ score < 0.50 → Tier C（存培育池）
   → 重复执行 = 重复记录（实测发生过 8 条重复）
 ```
 
----
+### 国家字段标准化
+
+**问题**：CRM 中国家字段可能出现英文/中文/缩写混用（如 "Nigeria"/"尼日利亚"/"NG"），导致筛选失败。
+
+**标准化规则**：
+```
+统一为一种语言（推荐中文或英文，选一种坚持到底）
+常见映射：
+  South Africa → 南非    Nigeria → 尼日利亚    Kenya → 肯尼亚
+  UAE → 阿联酋           Egypt → 埃及          Saudi → 沙特
+  Philippines → 菲律宾   Vietnam → 越南        Thailand → 泰国
+  Brazil → 巴西          Mexico → 墨西哥        Colombia → 哥伦比亚
+```
+
+**批量标准化脚本**：
+```python
+# 读取 CRM 全量记录 → 按映射表统一国家字段 → 批量回写
+# 实测：522 条记录英文→中文统一，覆盖 146 国 + 复合值
+```
+
+**Loop 4 健康巡检新增项**：
+- 国家字段标准化率 ≥ 95%（中文国家名占比）
+- 关键字段空值率检查（最后联系时间/商机阶段）
+
+### 国家字段标准化（v10.2.0 新增）
 
 ## 踩坑记录（Top 20 精选，完整 100+ 条见实战日志）
 
@@ -600,6 +691,20 @@ score < 0.50 → Tier C（存培育池）
 | facebook-scraper | Facebook 页面/群组爬取（反检测） | 免费 |
 | market-research-agent | 结构化市场调研框架 | 免费 |
 | serkaion-due-diligence | 投资/合作尽调框架（Go/No-Go） | 免费 |
+
+### 全工具链一览
+
+```
+搜索层：  web_search / Serper / Tavily / Firecrawl search
+爬取层：  Crawl4AI / Firecrawl scrape / Jina Reader / browser-act
+社交层：  facebook-scraper / linkedin-prospecting-jina / Agent Reach
+邮箱层：  Hunter.io / email-finder / email-verifier
+调研层：  account-research / research-company / market-research-agent
+背调层：  customer-due-diligence / serkaion-due-diligence
+触达层：  outbound-prospecting / cold-email-generator / send_email.py
+CRM层：   飞书 lark-cli / Notion API / Airtable API
+监控层：  holo-heartbeat-executor（Pipeline 巡检）
+```
 
 ### 付费可选
 
