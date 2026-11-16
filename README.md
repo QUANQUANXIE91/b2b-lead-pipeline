@@ -3,7 +3,7 @@
 > **B2B 外贸客户开发全流程 — 6 Agent 协作 × 4 大 Loop 自循环引擎**
 > 从线索发现到成交的完整自动化系统，适用于任何行业的外贸客户开发。
 
-[![version](https://img.shields.io/badge/version-2.1.0-blue)](./SKILL.md)
+[![version](https://img.shields.io/badge/version-2.3.0-blue)](./SKILL.md)
 [![license](https://img.shields.io/badge/license-MIT-green.svg)](./LICENSE)
 [![pitfalls](https://img.shields.io/badge/pitfalls-100%2B-orange)](./SKILL.md)
 [![industry](https://img.shields.io/badge/industry-any-purple)](./SKILL.md)
