@@ -1,5 +1,16 @@
 # Changelog
 
+## [2.4.0] — 2026-11-22
+
+### Added
+- 社媒商家号发现通道（TikTok dork，Stage 1.1）：`site:tiktok.com`×品类×国家 + 商家号过滤三排除（同行工厂号/品牌号/内容号），"在卖你品类的店=供货对象"切入逻辑
+- 补全策略栈 7 号位：Google knowledge panel / Maps 商家卡（无官网小商家的电话官网主力来源）
+- 张冠李戴防线（3.8）：邮箱域名主干匹配铁律、单源标未验证、竞品数字≠我方规格（538L/358L 真实事故）
+- Google Maps 提取器 v2.1（scripts）：真实 DOM 选择器（旧 data-item-* 系臆造）+ headless=new 反检测 + 邮箱域名匹配提取
+
+### Changed
+- 补联口径：无官网小商家优先 knowledge panel，有官网直取 contact 页；电话以商家卡/官网原文为准（搜索结果常掩码）
+
 ## [2.3.0] — 2026-11-16
 
 ### Added
