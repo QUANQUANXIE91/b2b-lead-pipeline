@@ -181,7 +181,7 @@ site:tiktok.com "congelador solar" OR "freezer solar"
 | LinkedIn 精确 | `site:linkedin.com/in/ "公司名" 职位` | `site:linkedin.com/in/ "Solar Cooling" CEO` |
 | 邮箱格式破解 | `"@公司域名" site:公司官网` | `"@example.com" site:example.com` |
 | 负面信号 | `"公司名" fraud\|scam\|complaint` | 排除风险客户 |
-| 决策人搜索 | `"公司名" email contact` | 非洲市场邮箱发现成功率 43% |
+| 决策人搜索 | `"公司名" email contact` | 非洲市场邮箱发现主力通道 |
 | 竞品分销商 | `"竞品品牌" distributor + 国家` | 挖竞品渠道网络 |
 | 目录站反查 | `site:enf.com OR site:kompass.com 产品词` | 行业目录批量挖掘 |
 
@@ -208,7 +208,7 @@ importer / distributor / wholesaler / dealer / reseller / agent / buyer / purcha
 
 ### 1.3 稀疏市场发现流程（CRM 饱和后的核心策略）
 
-当 CRM 记录数超过阈值（实测 3000+ 条后主要市场饱和），停止在饱和市场重复搜索，转向稀疏市场：
+当 CRM 记录数超过阈值（规模上来后主要市场饱和），停止在饱和市场重复搜索，转向稀疏市场：
 
 ```
 Step 1: CRM 国家分布扫描（offset 分页 + 计数）
@@ -341,8 +341,8 @@ BUYING_SIGNALS = {
 ### 3.2 补全策略栈（按优先级）
 
 1. **网站联系页** — 抓取 /contact, /about, /team 页面
-2. **Google 搜索** — `"公司名" email contact`（实测对非洲市场成功率 43%，远高于爬虫工具的 15%）
-3. **Hunter.io** — 域名邮箱查找（domain-search --type personal 命中率 46%）
+2. **Google 搜索** — `"公司名" email contact`（对非洲市场显著优于爬虫工具）
+3. **Hunter.io** — 域名邮箱查找（domain-search --type personal 补全）
 4. **邮箱格式推断** — 5 级格式按优先级推理
 5. **LinkedIn 查找** — Google 反查 `site:linkedin.com/in/` + Jina Reader 读取公开资料
 6. **社媒反向查找** — Facebook/Instagram 商业页面
@@ -390,7 +390,7 @@ dig +short +time=3 example.com A
 
 ### 3.7 批量补全工程化（千条级任务的标准姿势）
 
-把 500-3000 家缺资料公司丢给背调 API 批量跑时，工程纪律决定成败：
+把大批量缺资料公司丢给背调 API 批量跑时，工程纪律决定成败：
 
 1. **只填空，永不覆盖** — 已有电话/联系人的记录跳过对应字段，人工录的永远比机器猜的准
 2. **断点续传** — 每条结果实时 append 到 progress.jsonl，任务被 kill 后重启自动跳过已完成项
@@ -571,7 +571,7 @@ score < 0.50 → Tier C（存培育池）
 
 **回复率必须双口径**：
 ```
-冷信回复率基准 = 1-5%（行业），实测 2.5% 即健康
+冷信回复率以行业基准 1-5% 为健康区间
 回复率（记录口径）= 已回复记录数 / 已发送记录数
 回复率（去重口径）= 真实回复公司数 / 已发送公司数   ← 对外汇报用这个
 ```
@@ -707,7 +707,7 @@ firecrawl agent "Find top 5 distributors in Africa" --wait
 **当筛选转化率持续 <5% 时（Tier S/A 有邮箱记录 → 实际可发送），判定市场饱和：**
 
 ```
-实测饱和信号（3000+ 条 CRM 后）：
+饱和信号（CRM 规模上来后）：
 - 中东：192 条 Tier S/A → 3 条可发送（1.6%）
 - 东非：475 条记录 → 5 条发送（1.1%）
 - 拉美：223 条 → 3 条（1.3%）
@@ -787,7 +787,7 @@ firecrawl agent "Find top 5 distributors in Africa" --wait
 6. **邮箱 false positive** — 搜到的邮箱可能属于同名不同公司，必须验证邮箱域名 = 公司网站域名
 7. **通用邮箱前缀清单** — info@/sales@/contact@/support@/enquiry@/marketing@/inquiry@/hr@/customercare@/jobs@/recruitment@ 均属通用邮箱，不算决策人邮箱
 8. **域名健康度** — 非洲/中东小公司 87% DNS 失败，先 dig 预检
-9. **Hunter.io > 网站爬虫** — domain-search 命中率 46% vs 爬虫 ~0%
+9. **Hunter.io > 网站爬虫** — domain-search 补全远胜网站爬虫
 
 ### CRM 操作类
 
@@ -934,7 +934,7 @@ prompt: |
   执行 [地区] 开发信发送。
   筛选: Tier S/A + 未发送 + 决策人邮箱
   过滤: 竞品/非买家/通用邮箱/中国企业 + 抑制名单（已回复域名）
-  发送: 每日上限 25 封，评分≥80 按 Tier S>A>B 发，发满即止
+  发送: 每日上限按账号节奏阶梯，评分≥80 按 Tier S>A>B 发，发满即止
   节奏: 前 8 名完整深度研究，其余快速个性化（≥3 个性化元素不打折）
   发送: 逐封调用，每封间隔 2-3 分钟
   回写: 更新 CRM 邮件状态为"已发送"
